@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetable</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; }
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 10px; text-align: left; }
+        th { background-color: #f4f4f4; }
+    </style>
+</head>
+<body>
+
+<h1>Timetable</h1>
+
+{% if is_admin %}
+    <form method="POST">
+        {% for day, sessions in timetable.items() %}
+            <h3>{{ day }}</h3>
+            <table>
+                <tr>
+                    <th>Time</th>
+                    <th>Subject</th>
+                    <th>Venue</th>
+                    <th>faculty</th>
+                </tr>
+                {% for session in sessions %}
+                    <tr>
+                        <td>{{ session.time }}</td>
+                        <td>
+                            <input type="text" name="{{ day }}_{{ session.time }}_subject" value="{{ session.subject }}">
+                        </td>
+                        <td>
+                            <input type="text" name="{{ day }}_{{ session.time }}_venue" value="{{ session.venue }}">
+                        </td>
+                        <td>
+                            <input type="text" name="{{ day }}_{{ session.time }}_faculty" value="{{ session.faculty }}">
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <br>
+        {% endfor %}
+        <button type="submit">Save Changes</button>
+    </form>
+{% else %}
+    <table>
+        <tr>
+            <th>Time</th>
+            <th>Subject</th>
+            <th>Venue</th>
+            <th>faculty</th>
+        </tr>
+        {% for day, sessions in timetable.items() %}
+            <tr>
+                <td colspan="3"><strong>{{ day }}</strong></td>
+            </tr>
+            {% for session in sessions %}
+                <tr>
+                    <td>{{ session.time }}</td>
+                    <td>{{ session.subject }}</td>
+                    <td>{{ session.venue }}</td>
+                    <td>{{ session.faculty }}</td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    </table>
+{% endif %}
+
+</body>
+</html>
